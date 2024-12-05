@@ -1,0 +1,7 @@
+      System Configuration Settings
+
+1. Name of the Event: Semi Luxury
+2. Total Number of Tickets: 40
+3. Ticket Release Rate (Milli Seconds):2500
+4. Customer Retrieval Rate (Milli Seconds):3000
+5. Max Ticket Capacity :6
