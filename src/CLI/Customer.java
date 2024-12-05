@@ -10,7 +10,7 @@ public class Customer implements Runnable {
     private AtomicInteger totalTicketsReleased;
     private int totalTickets;
 
-    public static final Logger logger = Logger.getLogger(Customer.class.getName());
+    public static final Logger logger = Logger.getLogger(Main.class.getName());
 
     public Customer(String customerId, int customerRetrievalRate, TicketPool ticketPool, AtomicInteger totalTicketsReleased, int totalTickets) {
         this.customerId = customerId;
@@ -35,8 +35,7 @@ public class Customer implements Runnable {
                             if (totalTicketsReleased.get() == totalTickets && ticketPool.getCurrentPoolSize() == 0){
                                 break;
                             }else {
-                                System.out.println("No tickets left");
-                                System.out.println(customerId + " is waiting.");
+                                System.out.println("No tickets left. "+ customerId + " is waiting");
                                 ticketPool.wait();
                             }
                         }

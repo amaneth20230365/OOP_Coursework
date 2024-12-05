@@ -14,7 +14,7 @@ public class ConfigureSystem {
     private int customerRetrieveRate;
     private int maxTicketCapacity;
 
-    public static final Logger logger = Logger.getLogger(ConfigureSystem.class.getName());
+    public static final Logger logger = Logger.getLogger(Main.class.getName());
 
     public ConfigureSystem(int totalTicket, int ticketReleaseRate, int maxTicketCapacity) {
         this.totalTicket = totalTicket;

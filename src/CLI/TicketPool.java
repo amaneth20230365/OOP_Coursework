@@ -10,13 +10,14 @@ public class TicketPool {
     List<String> tickets = Collections.synchronizedList(new ArrayList<>());
     CLI.Vendor vendor = new CLI.Vendor();
 
-    public static final Logger logger = Logger.getLogger(TicketPool.class.getName());
+    public static final Logger logger = Logger.getLogger(Main.class.getName());
 
     public int getCurrentPoolSize() {
         return tickets.size();
     }
+
     public synchronized void produceTicket(String vendorId, int count, int poolSize, AtomicInteger totalTicketsReleased) {
-        while (tickets.size() + count > poolSize) {
+        if (tickets.size() + count > poolSize) {
             try {
                 System.out.println("TicketPool is full.");
                 System.out.println("Waiting");
@@ -28,14 +29,14 @@ public class TicketPool {
                 System.out.println(vendorId + " was interrupted while waiting to add tickets.");
                 logger.warning("ERROR: "+e.getMessage());
             }
-        }
-
-        for (int i = 0; i < count; i++) {
-            tickets.add("Ticket-" + (tickets.size() + 1));
-            totalTicketsReleased.incrementAndGet();
-            System.out.println(vendorId + " added 1 ticket. Current pool size: " + tickets.size()+". Total tickets released: " + totalTicketsReleased);
-            logger.info(vendorId + " added 1 ticket. Current pool size: " + tickets.size()+". Total tickets released: " + totalTicketsReleased);
-            notifyAll(); // Notify all waiting threads (likely customers)
+        } else if (tickets.size()+ count <= poolSize) {
+            for (int i = 0; i < count; i++) {
+                tickets.add("Ticket-" + (tickets.size() + 1));
+                totalTicketsReleased.incrementAndGet();
+                System.out.println(vendorId + " added 1 ticket. Current pool size: " + tickets.size()+". Total tickets released: " + totalTicketsReleased);
+                logger.info(vendorId + " added 1 ticket. Current pool size: " + tickets.size()+". Total tickets released: " + totalTicketsReleased);
+                notifyAll(); // Notify all waiting threads (likely customers)
+            }
         }
     }
 

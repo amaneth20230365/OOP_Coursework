@@ -13,7 +13,7 @@ public class Main {
 
         try {
             LogManager.getLogManager().reset();
-            FileHandler fileHandler = new FileHandler("Main.class.log");
+            FileHandler fileHandler = new FileHandler("Logging_file.log");
             logger.addHandler(fileHandler);
         } catch (IOException e) {
             logger.log(Level.SEVERE, "Error: ", e);

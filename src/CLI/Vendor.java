@@ -11,7 +11,7 @@ public class Vendor implements Runnable {
     private static final AtomicInteger totalTicketsReleased = new AtomicInteger(0);
     private int totalTickets;
 
-    public static final Logger logger = Logger.getLogger(Vendor.class.getName());
+    public static final Logger logger = Logger.getLogger(Main.class.getName());
 
     public Vendor(String vendorId,int totalTickets, int ticketReleaseRate ,int ticketPoolCapacity, TicketPool ticketPool) {
         this.vendorId = vendorId;
@@ -42,16 +42,12 @@ public class Vendor implements Runnable {
                         ticketPool.notifyAll();
                         Thread.sleep(ticketReleaseRate);
                     }
-                    else {
-                        System.out.println("Waiting");
-                        ticketPool.wait();
-                        Thread.sleep(ticketReleaseRate);
-                    }
                 }
             }catch (Exception e) {
                 System.out.println("ERROR"+e.getMessage());
                 logger.warning("ERROR "+e.getMessage());
             }
         }while (totalTicketsReleased.get() != totalTickets);
+//        continue to release tickets until totalTicketsReleased equals totalTickets assigned to the vendor.
     }
 }
