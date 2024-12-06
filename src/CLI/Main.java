@@ -43,7 +43,8 @@ public class Main {
                     logger.warning("Invalid Option.Please try again.");
                 }
             } catch (InputMismatchException e) {
-                System.out.println("Invalid option! Please try again.");
+                System.out.println("Invalid option! This is a character. Please try again.");
+                System.out.println("Enter Integer!");
                 logger.warning("Invalid Option. Please try again.");
                 input.nextLine();
                 option = -1;
@@ -52,10 +53,26 @@ public class Main {
                 case 1:
                     System.out.println("Load Existing Configuration File");
                     system.loadConfigurationSettingsFromFile();
-                    logger.info("Loading "+system.getEventName()+" file.");
-                    threadRunning(system, vendor,ticketPool);
-                    option =3;
-                    break;
+                    System.out.println("\nStart Simulation? ( Y / N )");
+                    String choice =input.next();
+                    try {
+                        if (choice.equalsIgnoreCase("Y")||choice.equalsIgnoreCase("Yes")) {
+                            logger.info("Loading "+system.getEventName()+" file.");
+                            threadRunning(system, vendor,ticketPool);
+                            option =3;
+                            break;
+                        } else if (choice.equalsIgnoreCase("N")||choice.equalsIgnoreCase("No")) {
+                            System.out.println("Redirecting to menu");
+                            continue;
+                        }
+                        else {
+                            System.out.println("Invalid Option. Please try again.");
+                            continue;
+                        }
+                    } catch (InputMismatchException e) {
+                        System.out.println("Please try again using a String");
+                        continue;
+                    }
                 case 2:
                     System.out.println("Create New Configuration File");
                     logger.info("Creating"+system.getEventName()+" file.");
