@@ -77,7 +77,6 @@ public class Main {
         int maxTickets = system.getMaxTicketCapacity();
         int ticketReleaseRate = system.getTicketReleaseRate();
         int customerRetrievalRate = system.getCustomerRetrieveRate();
-
         AtomicInteger counter = vendor.getTotalTicketsReleased();
 
         System.out.println("\nStarting Simulation >>>");

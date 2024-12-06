@@ -32,9 +32,9 @@ public class TicketPool {
         } else if (tickets.size()+ count <= poolSize) {
             for (int i = 0; i < count; i++) {
                 tickets.add("Ticket-" + (tickets.size() + 1));
-                totalTicketsReleased.incrementAndGet();
-                System.out.println(vendorId + " added 1 ticket. Current pool size: " + tickets.size()+". Total tickets released: " + totalTicketsReleased);
-                logger.info(vendorId + " added 1 ticket. Current pool size: " + tickets.size()+". Total tickets released: " + totalTicketsReleased);
+
+                System.out.println(vendorId + " added 1 ticket. Current pool size: " + tickets.size()+". Total tickets released: "+totalTicketsReleased);
+                logger.info(vendorId + " added 1 ticket. Current pool size: " + tickets.size()+". Total tickets released: "+totalTicketsReleased);
                 notifyAll(); // Notify all waiting threads (likely customers)
             }
         }

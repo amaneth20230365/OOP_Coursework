@@ -31,23 +31,24 @@ public class Vendor implements Runnable {
 
     @Override
     public void run() {
-        do {
-            try {
-                if (totalTicketsReleased.get() == ticketPoolCapacity) {
-                    break;
-                }
-                synchronized (ticketPool){
-                    if(ticketPool.getCurrentPoolSize() < ticketPoolCapacity) {
+            while (true) {
+                synchronized (ticketPool) {
+                    if (totalTicketsReleased.get() >= totalTickets) {
+                        break;
+                    }
+                    if (ticketPool.getCurrentPoolSize() + 1 <= ticketPoolCapacity) {
+                        totalTicketsReleased.incrementAndGet();
                         ticketPool.produceTicket(vendorId, 1, ticketPoolCapacity, totalTicketsReleased);
-                        ticketPool.notifyAll();
-                        Thread.sleep(ticketReleaseRate);
+
+                        try {
+                            Thread.sleep(ticketReleaseRate);
+                        } catch (InterruptedException e) {
+                            System.out.println("ERROR: " + e.getMessage());
+                        }
+                    } else {
+                        System.out.println("Ticket pool is full, waiting for cutsomers...");
                     }
                 }
-            }catch (Exception e) {
-                System.out.println("ERROR"+e.getMessage());
-                logger.warning("ERROR "+e.getMessage());
             }
-        }while (totalTicketsReleased.get() != totalTickets);
-//        continue to release tickets until totalTicketsReleased equals totalTickets assigned to the vendor.
     }
 }
