@@ -96,14 +96,13 @@ public class Main {
         int customerRetrievalRate = system.getCustomerRetrieveRate();
         AtomicInteger counter = vendor.getTotalTicketsReleased();
 
-        System.out.println("\nStarting Simulation >>>");
+        System.out.println("Starting Simulation >>>");
 
         Vendor vendor1 = new Vendor("vendor #01", totalTickets, ticketReleaseRate, maxTickets, ticketPool);
         Vendor vendor2 = new Vendor("vendor #02", totalTickets, ticketReleaseRate, maxTickets, ticketPool);
 
         Thread thread1 = new Thread(vendor1);
         Thread thread2 = new Thread(vendor2);
-
 
         Customer customer1 = new Customer("customer #01", customerRetrievalRate, ticketPool, counter, totalTickets);
         Customer customer2 = new Customer("customer #02", customerRetrievalRate, ticketPool, counter, totalTickets);

@@ -8,7 +8,6 @@ import java.util.logging.Logger;
 
 public class TicketPool {
     List<String> tickets = Collections.synchronizedList(new ArrayList<>());
-    CLI.Vendor vendor = new CLI.Vendor();
 
     public static final Logger logger = Logger.getLogger(Main.class.getName());
 
@@ -32,7 +31,6 @@ public class TicketPool {
         } else if (tickets.size()+ count <= poolSize) {
             for (int i = 0; i < count; i++) {
                 tickets.add("Ticket-" + (tickets.size() + 1));
-
                 System.out.println(vendorId + " added 1 ticket. Current pool size: " + tickets.size()+". Total tickets released: "+totalTicketsReleased);
                 logger.info(vendorId + " added 1 ticket. Current pool size: " + tickets.size()+". Total tickets released: "+totalTicketsReleased);
                 notifyAll(); // Notify all waiting threads (likely customers)

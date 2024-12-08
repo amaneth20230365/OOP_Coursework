@@ -39,11 +39,11 @@ public class Vendor implements Runnable {
                     if (ticketPool.getCurrentPoolSize() + 1 <= ticketPoolCapacity) {
                         totalTicketsReleased.incrementAndGet();
                         ticketPool.produceTicket(vendorId, 1, ticketPoolCapacity, totalTicketsReleased);
-
                         try {
                             Thread.sleep(ticketReleaseRate);
                         } catch (InterruptedException e) {
                             System.out.println("ERROR: " + e.getMessage());
+                            logger.warning(e.getMessage());
                         }
                     } else {
                         System.out.println("Ticket pool is full, waiting for cutsomers...");

@@ -1,9 +1,11 @@
 package CLI;
 
+import com.google.gson.Gson;
+import com.google.gson.GsonBuilder;
+
 import java.io.*;
 import java.util.InputMismatchException;
 import java.util.Scanner;
-import java.util.logging.LogManager;
 import java.util.logging.Logger;
 
 public class ConfigureSystem {
@@ -38,7 +40,8 @@ public class ConfigureSystem {
         ticketReleaseRate = validationInteger(input, "2. Input, Ticket Release Rate (Milli Seconds)[ 1s = 1000ms ]:");
         customerRetrieveRate = validationInteger(input, "3. Input, Customer Retrieval Rate (Milli Seconds) [ 1s = 1000ms ]:");
         maxTicketCapacity = validationInteger(input, "4. Input, Max Ticket Capacity:");
-        saveConfigurationSettingsToFile();
+        saveConfigurationSettingsToTextFile();
+        saveConfigurationToGsonFile();
     }
 
     public static int validationInteger(Scanner input, String prompt) {
@@ -72,7 +75,7 @@ public class ConfigureSystem {
             try {
                 System.out.println(prompt);
                 validString = input.nextLine();
-                if (validString == null) {
+                if (validString.isBlank()) {
                     System.out.println("ERROR:"+prompt);
                 }
                 else{
@@ -87,8 +90,20 @@ public class ConfigureSystem {
         }
         return validString;
     }
+    public void saveConfigurationToGsonFile(){
+        String fileName = String.format("%s.json", eventName);
+        Gson gson = new GsonBuilder().setPrettyPrinting().create();
+        try (FileWriter writer = new FileWriter(fileName)) {
+            gson.toJson(this, writer);
+            System.out.println("Configuration settings are successfully saved to " + fileName);
+            logger.info("Configuration settings are successfully saved to " + fileName);
+        } catch (IOException e) {
+            System.out.println("ERROR: "+e.getMessage());
+            System.out.println("Configuration settings failed to save to .");
+        }
+    }
 
-    public void saveConfigurationSettingsToFile() {
+    public void saveConfigurationSettingsToTextFile() {
         String fileName = String.format("%s.txt",(eventName));
         try (BufferedWriter writer = new BufferedWriter(new FileWriter(fileName))) {
             writer.write("      System Configuration Settings\n");
@@ -104,8 +119,8 @@ public class ConfigureSystem {
             writer.write("5. Max Ticket Capacity :" + maxTicketCapacity);
             writer.newLine();
 
-            System.out.println("Configuration saved to " + fileName);
-            logger.info("Configuration saved to " + fileName);
+            System.out.println("Configuration settings are successfully saved to " + fileName);
+            logger.info("Configuration settings are successfully saved to " + fileName);
 
         } catch (IOException e) {
             System.out.println("ERROR: Unable to save configuration to file. Please try again.");
